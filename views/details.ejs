@@ -1,0 +1,35 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="details content">
+        <h2><%= blog.title %></h2>
+        <div class="content">
+            <p><%= blog.body %></p>
+        </div>
+        <a class="delete" data-doc="<%= blog._id %>">delete</a>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+
+
+    <script>
+        const deleteBlog = document.querySelector('a.delete');
+
+        deleteBlog.addEventListener('click', async (e) => {
+            try {
+                const response = await fetch(`/blogs/${deleteBlog.dataset.doc}`, {
+                    method: 'DELETE'
+                })
+                const data = await response.json()
+                window.location.href = data && data.redirect
+            } catch (err) {
+                console.log(err)
+            }
+        });
+    </script>
+</body>
+
+</html>
